@@ -1,4 +1,4 @@
-# 2023-1-MCTeamProject
+# Angry-Alarm : MC Project
 ##### 1. 파일별 변경 사항은 각 폴더의 READMD.md에 작성
 ##### 2. 오류는 마크다운 언어로 .md 파일 생성 후 작성
 ##### 3. 주기적인 회의의 회의록은 README.md 파일에 작성 
