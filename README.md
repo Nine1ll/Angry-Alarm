@@ -11,7 +11,7 @@
     - DB를 위한 Table 설계 & Data를 동적으로 view를 통해 보여주는 기능
     -  안정적 작동 필요
     -  추가 : 필수 구현 외의 앱 기능, 구현 난이도, 외부 API 라이브러리 연동 (추가 점수)
-#### 조원 : 김광영, 길현서, 오명빈
+#### 조원 : 김광영(60211642), 길현서(60191566), 오명빈()
 
 ### 2023.05.12(금) 11AM
 ##### 주제 공유 - 회의록 작성 : 김광영
@@ -119,15 +119,16 @@
             (2)있는 알람 보여주는 화면 -> DB 연동
             (3)화면이 사용 중일 때 알람
             (4)화면이 사용 중이지 않을 때 알람.
+
         5. UI 디자인 
             삼성 휴대폰의 시계 어플리케이션을 따를 것임
-            <img src="img/알람 보여주는 화면.jpeg" width="300px" height="600px" alt="투표 이미지"></img><br/>
-            <img src="img/알람 설정화면.jpeg" width="300px" height="600px" alt="투표 이미지"></img><br/>
-            <img src="img/알람음 설정.png" width="300px" height="600px" alt="알람음 설정 이미지"></img><br/>
-            <img src="img/다시울림 설정화면.png" width="300px" height="600px" alt="투표 이미지"></img><br/>
-            -- 추후 추가 예정
-            - 화면 사용 시 알람
-            - 화면 사용 하지 않을 시 알람
+            <img src="img/알람 기록.jpeg" width="300px" height="600px" alt="알람 기록"></img><br/>
+            <img src="img/알람 설정.jpeg" width="300px" height="600px" alt="알람 설정"></img><br/>
+            <img src="img/알람 사운드 및 진동 설정.png" width="300px" height="600px" alt="알람 사운드 및 진동 설정"></img><br/>
+            <img src="img/알람 다시울림 설정.png" width="300px" height="600px" alt="다시울림 설정"></img><br/>
+            <img src="img/화면 미사용.png" width="300px" height="600px" alt="화면 미사용"></img><br/>
+            <img src="img/화면 사용.png" width="300px" height="600px" alt="화면 사용"></img><br/>
+            
         6. 세부 파일 정리 (임시 설계)
         
             XML 파일:
