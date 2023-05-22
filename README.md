@@ -147,3 +147,17 @@
             1. AlarmListFragment.java: 알람 목록을 표시하고 관리하는 Fragment 클래스
             2. AlarmSettingsFragment.java: 알람 설정을 위한 Fragment 클래스
             3. AlarmDismissFragment.java: 알람 해제 화면을 담당하는 Fragment 클래스
+
+
+### 2023.05.22(월) 수업시간
+##### 교수님 FeedBack & 질문 - 작성 : 김광영
+
+###### 질문 
+1. 만약에 그 상대가 원하지 않는 경우? -> 기능 추가 필요? <br><br>
+###### 교수님 피드백 <br><br>
+
+1. 카카오 api 권한을 허가 받는게  시간 내에 현실적으로 가능? <br><br>
+    ##### 카카오톡 승인이 3주~4주가 걸림, 현실적으로 승인 받기 불가능
+    -> SMS로 구현 선회   <br><br>
+
+2. 내장 SMS를 보낼 수 있는 기능이 존재? : 기능 존재해서 진행 가능
