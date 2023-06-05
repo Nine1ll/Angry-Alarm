@@ -4,11 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:keepScreenOn="true"
     android:background="@color/black"
     tools:context=".MainActivity">
-
-    <!--    app:layout_constraintDimensionRatio="H,1:1" : 1대1 비율 지정.-->
-
 
     <View
         android:layout_width="0dp"
@@ -22,45 +20,46 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.603" />
+        app:layout_constraintVertical_bias="0.648" />
 
     <TextView
-        android:id="@+id/timeTextView"
+        android:id="@+id/timeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="09:30"
         android:textColor="@color/white"
-        android:textSize="50sp"
-        app:layout_constraintBottom_toTopOf="@id/ampmTextView"
+        android:textSize="60sp"
+        app:layout_constraintBottom_toTopOf="@id/dateView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        tools:text="09:30" />
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
-        android:id="@+id/ampmTextView"
+        android:id="@+id/dateView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
-        android:textSize="25sp"
+        android:textSize="30sp"
+        android:text="2023년 06월 06일"
         app:layout_constraintBottom_toTopOf="@id/off_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/timeTextView"
-        tools:text="6월 5일 월요일" />
+        app:layout_constraintTop_toBottomOf="@id/timeView" />
 
     <TextView
-        android:id="@+id/memo"
+        android:id="@+id/memoView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:textColor="@color/white"
         android:textSize="25sp"
+        android:text="알람입니다"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ampmTextView"
-        tools:text="알람입니다" />
+        app:layout_constraintTop_toBottomOf="@+id/dateView" />
 
     <Button
         android:id="@+id/off_btn"
@@ -69,17 +68,17 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:textSize="20sp"
         android:text="알람종료"
-        app:layout_constraintBottom_toTopOf="@id/changeAlarmTimeButton"
+        app:layout_constraintBottom_toTopOf="@id/realarm_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/plus_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
@@ -87,33 +86,35 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/changeAlarmTimeButton"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/realarm_btn"
         app:layout_constraintTop_toBottomOf="@+id/off_btn"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
-        android:id="@+id/changeAlarmTimeButton"
+        android:id="@+id/realarm_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="92dp"
-        android:text="n분 후 다시울림"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="100dp"
+        android:text="5분 후 다시울림"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/plus_btn"
         app:layout_constraintStart_toEndOf="@+id/minus_btn" />
-    `
+
     <Button
         android:id="@+id/minus_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="90dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:text="-"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/changeAlarmTimeButton"
+        app:layout_constraintEnd_toStartOf="@+id/realarm_btn"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/off_btn"
