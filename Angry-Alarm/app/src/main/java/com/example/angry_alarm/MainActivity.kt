@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TimePicker
 import android.widget.Toast
@@ -15,6 +16,9 @@ class MainActivity : AppCompatActivity() {
     private var alarmManager: AlarmManager? = null
     private var timePicker: TimePicker? = null
     private var pendingIntent: PendingIntent? = null
+    var realarm = false
+    var interval = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -22,15 +26,33 @@ class MainActivity : AppCompatActivity() {
         timePicker = findViewById<TimePicker>(R.id.timePicker)
         findViewById<View>(R.id.btnStart).setOnClickListener(mClickListener)
         findViewById<View>(R.id.btnStop).setOnClickListener(mClickListener)
+
+        /// FullScreenActivity에서 넘어왔는지 확인
+        if (intent != null && savedInstanceState == null) {
+            realarm = intent.getBooleanExtra("realarm", false)
+            interval = intent.getIntExtra("interval", 0)
+            if (interval != 0) {
+                pendingIntent = intent.getParcelableExtra<PendingIntent>("pendingIntent")
+                stop()          // 사용자가 다시 울림 버튼을 눌렀으므로 현재 알림은 stop
+                start()
+            }
+        }
     }
 
     /* 알람 시작 */
     private fun start() {
-        // 시간 설정
         val calendar = Calendar.getInstance()
-        calendar[Calendar.HOUR_OF_DAY] = timePicker!!.hour
-        calendar[Calendar.MINUTE] = timePicker!!.minute
-        calendar[Calendar.SECOND] = 0
+
+        // 첫알림과 다시알림 구분하여 시간 설정
+        if (!realarm) {
+            calendar[Calendar.HOUR_OF_DAY] = timePicker!!.hour
+            calendar[Calendar.MINUTE] = timePicker!!.minute
+            calendar[Calendar.SECOND] = 0
+        } else {                // 다시 알람일 경우 minute에 interval 더한 시간으로 수정
+            calendar[Calendar.HOUR_OF_DAY] = calendar.get(Calendar.HOUR_OF_DAY)
+            calendar[Calendar.MINUTE] = calendar.get(Calendar.MINUTE) + interval
+            calendar[Calendar.SECOND] = 0
+        }
 
         // 현재시간보다 이전이면
         if (calendar.before(Calendar.getInstance())) {
