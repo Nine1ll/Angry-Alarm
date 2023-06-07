@@ -5,9 +5,11 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
 import android.widget.Toast
 import com.example.angry_alarm.databinding.AlarmRunBinding
-import java.util.Calendar
+import java.util.*
+
 
 class FullScreenActivity : Activity() {
     lateinit var binding : AlarmRunBinding
@@ -28,6 +30,14 @@ class FullScreenActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root) // fullscreen.xml 파일의 레이아웃을 설정
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+
+        // 잠금화면 깨우기
+        window.addFlags(
+            WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+                    or WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD
+                    or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+                    or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+        )
 
         binding.timeView.text = String.format("%02d:%02d", hour, minute)
         binding.dateView.text = String.format("%d년 %02d월 %02d일", year, month, day)

@@ -2,13 +2,10 @@ package com.example.angry_alarm
 
 import android.app.*
 import android.content.Intent
-import android.media.AudioAttributes
 import android.media.MediaPlayer
-import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
-import android.view.WindowManager
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -44,7 +41,7 @@ class AlarmService : Service() {
                 .setContentTitle("알람입니다")
                 .setContentText("일어나세요")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_CALL)
+                //.setCategory(NotificationCompat.CATEGORY_)
                 //.setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_VIBRATE)
                 //.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(fullScreenPendingIntent)
@@ -60,13 +57,13 @@ class AlarmService : Service() {
         val state = intent.getStringExtra("state")
 
         if (!isRunning && (state == "on")) {
-            // 알람음 재생 OFF, 알람음 시작 상태
+            // 알람음 start
             mediaPlayer = MediaPlayer.create(this, R.raw.alarm)
             mediaPlayer!!.start()
             isRunning = true
             Log.d("AlarmService", "Alarm Start")
         } else if (isRunning and (state == "off")) {
-            // 알람음 재생 ON, 알람음 중지 상태
+            // 알람음 stop
             mediaPlayer!!.stop()
             mediaPlayer!!.reset()
             mediaPlayer!!.release()
@@ -77,13 +74,14 @@ class AlarmService : Service() {
             }
         }
         return START_NOT_STICKY
+        //return START_STICKY
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(): String {
         val channelId = "Alarm"
         val channelName = getString(R.string.app_name)
-        // 중요 부분. importance high로 설정해야 한다!
+        // *중요* importance high로 설정
         val importance = NotificationManager.IMPORTANCE_HIGH
         val channel =
             NotificationChannel(channelId, channelName, importance)
