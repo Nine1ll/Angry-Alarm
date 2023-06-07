@@ -1,14 +1,18 @@
 package com.example.angry_alarm
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private var alarmManager: AlarmManager? = null
     private var timePicker: TimePicker? = null
     private var pendingIntent: PendingIntent? = null
+
     var realarm = false
     var interval = 0
 
@@ -26,6 +31,26 @@ class MainActivity : AppCompatActivity() {
         timePicker = findViewById<TimePicker>(R.id.timePicker)
         findViewById<View>(R.id.btnStart).setOnClickListener(mClickListener)
         findViewById<View>(R.id.btnStop).setOnClickListener(mClickListener)
+
+        // 알람 권한 허용 (Android 13부터 생긴 알림 권한)
+        TedPermission.create()
+            .setPermissionListener(object: PermissionListener {
+            override fun onPermissionGranted() {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Permission Granted",
+                    Toast.LENGTH_SHORT).show()
+            }
+            override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                Toast.makeText(
+                    this@MainActivity,
+                    "Permission Denied",
+                    Toast.LENGTH_SHORT). show()
+            }
+        })
+        .setDeniedMessage("If you reject permission, you can not use")
+        .setPermissions(Manifest.permission.POST_NOTIFICATIONS)
+        .check()
 
         /// FullScreenActivity에서 넘어왔는지 확인
         if (intent != null && savedInstanceState == null) {
