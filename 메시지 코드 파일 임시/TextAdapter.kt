@@ -1,16 +1,14 @@
-package kr.nine1ll.newtext
+package com.example.angryalarm
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kr.nine1ll.newtext.databinding.TextListBinding
+import com.example.angryalarm.databinding.TextListBinding
 import kr.nine1ll.newtext.textdb.TextTable
 
-class TextAdapter(private var dataSet: MutableList<TextTable>) : RecyclerView.Adapter<TextAdapter.TextViewHolder>() {
-
+class TextAdapter (private var dataSet: MutableList<TextTable>): RecyclerView.Adapter<TextAdapter.TextViewHolder>(){
     class TextViewHolder(val binding: TextListBinding) : RecyclerView.ViewHolder(binding.root)
-
     override fun getItemCount() = dataSet.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TextViewHolder {

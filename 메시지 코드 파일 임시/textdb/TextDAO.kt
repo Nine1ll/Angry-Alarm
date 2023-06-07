@@ -26,4 +26,7 @@ interface TextDAO {
 
     @Query("SELECT * FROM TEXTTABLE WHERE message=:message")
     fun selectByMessage(message: String?): TextTable
+
+    @Query("SELECT * FROM TEXTTABLE WHERE alarmId=:alarmId")
+    fun selectByAlarmId(alarmId: Int?): MutableList<TextTable>
 }

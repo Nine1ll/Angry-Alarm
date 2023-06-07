@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewText</string>
+    <string name="app_name">AngryAlarm</string>
     <string name="SendText">메세지 보내기</string>
     <string name="copy">복사하기</string>
     <string name="telNumber">번호: </string>
