@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationManagerCompat
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
 import java.text.SimpleDateFormat
@@ -32,27 +33,27 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.btnStart).setOnClickListener(mClickListener)
         findViewById<View>(R.id.btnStop).setOnClickListener(mClickListener)
 
-        // 알람 권한 허용 (Android 13부터 생긴 알림 권한)
+        // 알람 권한 허용 (Android 13부터 알림 권한(POST_NOTIFICATIONS)을 허용해야 알람을 띄울 수 있음)
         TedPermission.create()
             .setPermissionListener(object: PermissionListener {
             override fun onPermissionGranted() {
                 Toast.makeText(
                     this@MainActivity,
-                    "Permission Granted",
+                    "알림을 허용합니다",
                     Toast.LENGTH_SHORT).show()
             }
             override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
                 Toast.makeText(
                     this@MainActivity,
-                    "Permission Denied",
+                    "알림이 제한됩니다",
                     Toast.LENGTH_SHORT). show()
             }
         })
-        .setDeniedMessage("If you reject permission, you can not use")
+        .setDeniedMessage("원활한 어플 이용을 위해 반드시 알림 권한을 허용해주세요. 거부 시 어플 기능이 제한됩니다.")
         .setPermissions(Manifest.permission.POST_NOTIFICATIONS)
         .check()
 
-        /// FullScreenActivity에서 넘어왔는지 확인
+        // FullScreenActivity에서 넘어왔는지 확인
         if (intent != null && savedInstanceState == null) {
             realarm = intent.getBooleanExtra("realarm", false)
             interval = intent.getIntExtra("interval", 0)
