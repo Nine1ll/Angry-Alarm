@@ -77,12 +77,12 @@ class FullScreenActivity : Activity() {
         pendingIntent =
             PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
         alarmManager!!.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
-        val intentbb = Intent(this, MainActivity::class.java)
+        val reintent = Intent(this, MainActivity::class.java)
 
         // MainActivity로 전달
-        intentbb.putExtra("realarm", true)
-        intentbb.putExtra("interval", interval)
-        intentbb.putExtra("pendingIntent", pendingIntent)
-        startActivity(intentbb)
+        reintent.putExtra("realarm", true)
+        reintent.putExtra("interval", interval)
+        reintent.putExtra("pendingIntent", pendingIntent)
+        startActivity(reintent)
     }
 }
