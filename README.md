@@ -1,6 +1,6 @@
 # Angry-Alarm : MC Project
 ##### 1. 파일별 변경 사항은 각 커밋 시 상세히 작성한다.
-##### 2. 주기적인 회의의 회의록은 Projects/회의록(https://github.com/orgs/mobile-coumputing-2023-1/projects/4)에 작성한다.
+##### 2. 주기적인 회의의 회의록은 [Projects/회의록](https://github.com/orgs/mobile-coumputing-2023-1/projects/4)에 작성한다.
 ##### 3. 커밋은 < 작업 이름 : 커밋 날짜 > 와 같이 작성한다.
 
 - 참고 사이트 : [마크다운 사용법] <https://gist.github.com/ihoneymon/652be052a0727ad59601>
