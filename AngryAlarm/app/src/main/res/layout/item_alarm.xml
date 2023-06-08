@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/alarm_frame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:id="@+id/alarm_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/alarm_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:textSize="60sp"
+            android:maxLines="1"
+            tools:text="07:00" />
+
+
+        <TextView
+            android:id="@+id/APM"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alarm_time"
+            android:layout_alignEnd="@id/alarm_time"
+            android:layout_marginTop="-33dp"
+            android:layout_marginEnd="-30dp"
+            android:text="am"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/alarm_days"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_time"
+            android:layout_toStartOf="@+id/alarm_onoff"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:paddingStart="2dp"
+            android:textSize="16sp"
+            tools:text="Mon, Tue, Wed, Thu, Fri" />
+
+        <TextView
+            android:id="@+id/alarm_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/alarm_days"
+            android:layout_toStartOf="@+id/alarm_onoff"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:paddingStart="2dp"
+            android:textSize="16sp"
+            tools:text="Good morning!" />
+
+        <Switch
+            android:id="@+id/alarm_onoff"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignTop="@+id/alarm_time"
+            android:layout_alignBottom="@id/alarm_title"
+            android:layout_alignParentEnd="true"
+            android:paddingStart="16dp"
+            android:paddingEnd="8dp"/>
+
+    </RelativeLayout>
+</FrameLayout>
