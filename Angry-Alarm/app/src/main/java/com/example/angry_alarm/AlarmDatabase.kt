@@ -1,5 +1,6 @@
 package com.example.angry_alarm
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -15,8 +16,6 @@ class AlarmDatabase {
             const val hour = "hour"
             const val minute = "minute"
             const val alarm_days = "alarm_days"
-            const val repeat_count = "repeat_count"
-            const val repeat_interval = "repeat_interval"
             const val isVibrator = "isVibrator"
             const val isSwitchOn = "isSwitchOn"
         }
@@ -31,8 +30,6 @@ class AlarmDatabase {
                     "${MyDBContract.MyEntry.hour} INTEGER," +
                     "${MyDBContract.MyEntry.minute} INTEGER," +
                     "${MyDBContract.MyEntry.alarm_days} TEXT," +
-                    "${MyDBContract.MyEntry.repeat_count} INTEGER," +
-                    "${MyDBContract.MyEntry.repeat_interval} INTEGER," +
                     "${MyDBContract.MyEntry.isVibrator} INTEGER DEFAULT 0," +
                     "${MyDBContract.MyEntry.isSwitchOn} INTEGER DEFAULT 0)"
         val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${MyDBContract.MyEntry.TABLE_NAME}"
@@ -71,8 +68,6 @@ class AlarmDatabase {
                     val hour = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.hour))
                     val minute = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.minute))
                     val alarmDays = getString(getColumnIndexOrThrow(MyDBContract.MyEntry.alarm_days))
-                    val repeatCount = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.repeat_count))
-                    val repeatInterval = getLong(getColumnIndexOrThrow(MyDBContract.MyEntry.repeat_interval))
                     val isVibrator = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.isVibrator)) == 1
                     val isSwitchOn = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.isSwitchOn)) == 1
 
@@ -83,8 +78,6 @@ class AlarmDatabase {
                             hour,
                             minute,
                             alarmDays,
-                            repeatCount,
-                            repeatInterval,
                             isVibrator,
                             isSwitchOn
                         )
@@ -95,6 +88,20 @@ class AlarmDatabase {
 
             return readList
         }
+        fun updateSwitchStatus(alarmId: Int, isSwitchOn: Boolean): Int {
+            val db = writableDatabase
+
+            val myEntry = AlarmDatabase.MyDBContract.MyEntry
+            val values = ContentValues().apply {
+                put(myEntry.isSwitchOn, if (isSwitchOn) 1 else 0)
+            }
+            val where = "${myEntry.alarm_id} = ?"
+            val whereArgs = arrayOf(alarmId.toString())
+
+            return db.update(myEntry.TABLE_NAME, values, where, whereArgs)
+        }
+
+
 
         fun delEntry(alarmId:Int):Int{
             val db = writableDatabase

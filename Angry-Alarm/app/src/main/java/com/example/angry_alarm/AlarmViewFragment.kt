@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,6 +46,21 @@ class AlarmViewFragment : Fragment() {
         binding.alarmsList.adapter = adapter
         binding.alarmsList.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
 
+        adapter.setOnCheckedChangeListener { alarmId: Int, isChecked: Boolean ->
+            dbHelper.updateSwitchStatus(alarmId, isChecked)
+
+            val updatedList = dbHelper.selectAll()
+            adapter.setList(updatedList)
+            adapter.notifyDataSetChanged()
+
+            // 알람이 켜졌음을 나타내는 Toast 메시지 표시
+            if (isChecked) {
+                Toast.makeText(requireContext(), "알람이 켜졌습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(), "알람이 꺼졌습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         adapter.setOnItemClickListener { position: Int ->
             val alarmId = adapter.getItemSelectionKey(position)
             alarmId?.let { mainActivity.onAlarmSelected(it) }
@@ -53,6 +69,7 @@ class AlarmViewFragment : Fragment() {
                 comm.passDataCom(alarmId)
             }
         }
+
 
         adapter.setOnLongClickListener { position: Int ->
             val builder = AlertDialog.Builder(requireContext())

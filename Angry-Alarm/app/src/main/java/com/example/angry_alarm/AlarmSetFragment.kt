@@ -112,8 +112,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         val hour = cursor.getInt(cursor.getColumnIndexOrThrow(myentry.hour))
         val minute = cursor.getInt(cursor.getColumnIndexOrThrow(myentry.minute))
         val alarmDays = cursor.getString(cursor.getColumnIndexOrThrow(myentry.alarm_days))
-        val repeatCount = cursor.getInt(cursor.getColumnIndexOrThrow(myentry.repeat_count))
-        val repeatInterval = cursor.getLong(cursor.getColumnIndexOrThrow(myentry.repeat_interval))
         val isVibrator = cursor.getInt(cursor.getColumnIndexOrThrow(myentry.isVibrator)) == 1
         val isSwitchOn = cursor.getInt(cursor.getColumnIndexOrThrow(myentry.isSwitchOn)) == 1
         cursor.close()
@@ -125,8 +123,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
             hour,
             minute,
             alarmDays,
-            repeatCount,
-            repeatInterval,
             isVibrator,
             isSwitchOn
         )
@@ -136,8 +132,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         binding?.timePicker?.hour = hour
         binding?.timePicker?.minute = minute
         setSelectedDays(alarmDays)
-        binding?.repeatCount?.setText(repeatCount.toString())
-        binding?.interval?.setText(repeatInterval.toString())
 
         // 변경 버튼으로 텍스트 변경
         binding?.scheduleAlarm?.setOnClickListener {
@@ -152,8 +146,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         val hour = binding.timePicker.hour
         val minute = binding.timePicker.minute
         val alarmDays = getSelectedDays()
-        val repeatCount = binding.repeatCount.text.toString() // Repeat count 초기값 설정
-        val repeatInterval = binding.interval.text.toString()// Repeat interval 초기값 설정
 
         // 데이터베이스에 알람 정보 저장
         val db = dbHelper.writableDatabase
@@ -163,8 +155,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
             put(myentry.hour, hour)
             put(myentry.minute, minute)
             put(myentry.alarm_days, alarmDays)
-            put(myentry.repeat_count, repeatCount.toInt())
-            put(myentry.repeat_interval, repeatInterval.toInt())
             put(myentry.isVibrator, 0) // 진동 설정 여부 저장
             put(myentry.isSwitchOn, 0) // 스위치 상태 저장
         }
@@ -172,6 +162,11 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         db.close()
 
         onAlarmSet(title, hour, minute)
+
+        // 저장버튼 누를 시 알람 뷰 fragment로 이동
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentPlace,AlarmViewFragment())
+            .commit()
 
         // 알람 저장 완료 메시지 출력
         Toast.makeText(requireContext(), "알람이 저장되었습니다.", Toast.LENGTH_SHORT).show()
@@ -200,8 +195,12 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         val selectionArgs = arrayOf(alarmToUpdate.alarm_id.toString())
         db.update(myentry.TABLE_NAME, values, selection, selectionArgs)
         db.close()
-
         // 기존 알람 취소
+
+        // 저장버튼 누를 시 알람 뷰 fragment로 이동
+        parentFragmentManager.beginTransaction()
+            .replace(R.id.fragmentPlace,AlarmViewFragment())
+            .commit()
 
         // 알림 변경 완료 메시지 출력
         Toast.makeText(requireContext(), "알람이 변경되었습니다.", Toast.LENGTH_SHORT).show()
@@ -243,8 +242,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         binding?.timePicker?.hour = 0
         binding?.timePicker?.minute = 0
         setSelectedDays("")
-        binding?.repeatCount?.text?.clear()
-        binding?.interval?.text?.clear()
         binding?.scheduleAlarm?.text = "저장" // 버튼 텍스트 변경
     }
 

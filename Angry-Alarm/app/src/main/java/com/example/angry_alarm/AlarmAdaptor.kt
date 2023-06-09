@@ -13,6 +13,8 @@ class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
 
     private var OnLongClickListener: ((Int) -> Unit)? = null
 
+    private var onCheckedChangeListener: ((Int, Boolean) -> Unit)? = null
+
     fun setOnItemClickListener(listener: (Int) -> Unit) {
         onItemClickListener = listener
     }
@@ -20,8 +22,9 @@ class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
     fun setOnLongClickListener(listener: (Int) -> Unit) {
         OnLongClickListener = listener
     }
-
-
+    fun setOnCheckedChangeListener(listener: (Int, Boolean) -> Unit) {
+        onCheckedChangeListener = listener
+    }
 
     fun getItemSelectionKey(position: Int) = dataSet.getOrNull(position)?.alarm_id
 
@@ -43,6 +46,9 @@ class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
             OnLongClickListener?.invoke(position)
             return@OnLongClickListener true
         }
+        holder.binding.alarmOnoff.setOnCheckedChangeListener { _, isChecked ->
+            onCheckedChangeListener?.invoke(element.alarm_id, isChecked)
+        }
     }
 
     fun setList(newList: MutableList<MyElement>) {
@@ -52,7 +58,7 @@ class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
 
     fun getElement(position: Int): MyElement = dataSet[position]
 
-    inner class MyViewHolder(private val binding: ItemAlarmBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class MyViewHolder(val binding: ItemAlarmBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyElement) {
             binding.alarmTime.text = item.getFormattedTime()
             binding.APM.text = item.getAMPM(item.hour)
