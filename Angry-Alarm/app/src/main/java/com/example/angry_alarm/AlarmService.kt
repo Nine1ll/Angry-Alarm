@@ -23,7 +23,7 @@ class AlarmService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         // Foreground 에서 실행되면 Notification 을 보여줘야 됨
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            //full
+            // fullscreen notificaition
             val fullScreenIntent = Intent(this, FullScreenActivity::class.java)
             val fullScreenPendingIntent =
                 PendingIntent.getActivity(
@@ -38,9 +38,10 @@ class AlarmService : Service() {
             val builder = NotificationCompat.Builder(this, channelId)
             val notification: Notification = builder.setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher) //.setCategory(Notification.CATEGORY_SERVICE)
-                .setContentTitle("알람입니다")
+                .setContentTitle("알람입니다")       // 알람 타이틀로 변경?
                 .setContentText("일어나세요")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                //.setDefaults(Notification.DEFAULT_VIBRATE)
                 //.setCategory(NotificationCompat.CATEGORY_)
                 //.setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_VIBRATE)
                 //.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -81,11 +82,11 @@ class AlarmService : Service() {
     private fun createNotificationChannel(): String {
         val channelId = "Alarm"
         val channelName = getString(R.string.app_name)
-        // *중요* importance high로 설정
+        // 헤드업 알림을 위해 importace를 high로 설정
         val importance = NotificationManager.IMPORTANCE_HIGH
         val channel =
             NotificationChannel(channelId, channelName, importance)
-        //channel.setDescription(channelName);
+        channel.setDescription(channelName)
         channel.setSound(null, null)
         channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager

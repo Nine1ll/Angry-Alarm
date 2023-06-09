@@ -1,10 +1,10 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.angryalarm.databinding.ItemAlarmBinding
+import com.example.angry_alarm.databinding.ItemAlarmBinding
+
 
 class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
     RecyclerView.Adapter<AlarmAdaptor.MyViewHolder>() {

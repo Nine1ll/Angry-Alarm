@@ -1,21 +1,21 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
-import com.example.angryalarm.databinding.FragmentAlarmSetBinding
+import com.example.angry_alarm.databinding.FragmentAlarmSetBinding
 import java.util.Calendar
 
-class AlarmSetFragment : Fragment() {
+class AlarmSetFragment : Fragment(), AlarmSetListener {
+    private var alarmSet: AlarmSetListener? = null
     private var binding: FragmentAlarmSetBinding? = null
     lateinit var dbHelper: AlarmDatabase.MyDbHelper
     private var alarm: MyElement? = null
-    private lateinit var alarmManager: AlarmManager
     private var alarmId: Int? = -1;
 
     override fun onCreateView(
@@ -36,7 +36,6 @@ class AlarmSetFragment : Fragment() {
         }else{
             clearAlarmInfo();
 
-            ;
             binding?.timePicker?.hour = Calendar.getInstance().get(Calendar.HOUR)
             binding?.timePicker?.minute = Calendar.getInstance().get(Calendar.MINUTE)
 
@@ -58,6 +57,35 @@ class AlarmSetFragment : Fragment() {
             }
         }
     }
+
+    // fragment가 activity에 붙을 때 activity가 MyClickListener를 구현하고 있는지 확인
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        // 구현되어 있다면 clickListener 변수를 설정
+        if (context is AlarmSetListener) {
+            alarmSet = context
+        } else {
+            throw IllegalArgumentException("Activity must implement MyClickListener")
+        }
+    }
+
+    // clickListener 변수를 해제
+    override fun onDetach() {
+        super.onDetach()
+        alarmSet = null
+    }
+
+    override fun onAlarmSet(
+        title: String,
+        hour: Int,
+        minute: Int,
+//        alarmDays: String,
+//        repeatCount: Int,
+//        repeatInterval: Int
+    ) {
+        (activity as? AlarmSetListener)?.onAlarmSet(title, hour, minute)
+    }
+
     fun setAlarmId(alarmId: Int?){
         this.alarmId = alarmId;
     }
@@ -143,11 +171,12 @@ class AlarmSetFragment : Fragment() {
         val newRowId = db.insert(myentry.TABLE_NAME, null, values)
         db.close()
 
+        onAlarmSet(title, hour, minute)
+
         // 알람 저장 완료 메시지 출력
         Toast.makeText(requireContext(), "알람이 저장되었습니다.", Toast.LENGTH_SHORT).show()
         clearAlarmInfo()
     }
-
 
     private fun updateAlarmInDatabase() {
         val binding = binding ?: return
@@ -180,7 +209,6 @@ class AlarmSetFragment : Fragment() {
         clearAlarmInfo()
     }
 
-
     private fun getSelectedDays(): String {
         val binding = binding ?: return "" // Null 체크
 
@@ -207,9 +235,8 @@ class AlarmSetFragment : Fragment() {
         binding.Fri.isChecked = selectedDays.contains("Fri")
         binding.Sat.isChecked = selectedDays.contains("Sat")
         binding.kSun.isChecked = selectedDays.contains("Sun")
-
-
     }
+
     private fun clearAlarmInfo() {
         // 알람 정보 초기화
         binding?.alarmTitle?.text?.clear()

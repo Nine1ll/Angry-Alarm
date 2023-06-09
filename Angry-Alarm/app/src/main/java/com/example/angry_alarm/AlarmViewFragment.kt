@@ -1,17 +1,15 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.angryalarm.databinding.FragmentAlarmBinding
+import com.example.angry_alarm.databinding.FragmentAlarmBinding
 
 class AlarmViewFragment : Fragment() {
     private lateinit var binding: FragmentAlarmBinding

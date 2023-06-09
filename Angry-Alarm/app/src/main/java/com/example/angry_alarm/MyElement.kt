@@ -1,7 +1,7 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
-import com.example.angryalarm.AlarmDatabase.MyDBContract.MyEntry.hour
-import com.example.angryalarm.AlarmDatabase.MyDBContract.MyEntry.minute
+import com.example.angry_alarm.AlarmDatabase.MyDBContract.MyEntry.hour
+import com.example.angry_alarm.AlarmDatabase.MyDBContract.MyEntry.minute
 
 data class MyElement(
     val alarm_id: Int,

@@ -71,6 +71,7 @@
             android:layout_alignTop="@+id/alarm_time"
             android:layout_alignBottom="@id/alarm_title"
             android:layout_alignParentEnd="true"
+            android:checked="true"
             android:paddingStart="16dp"
             android:paddingEnd="8dp"/>
 

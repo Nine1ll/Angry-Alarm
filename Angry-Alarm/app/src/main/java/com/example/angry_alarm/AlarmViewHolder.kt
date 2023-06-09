@@ -1,7 +1,7 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.angryalarm.databinding.ItemAlarmBinding
+import com.example.angry_alarm.databinding.ItemAlarmBinding
 
 class AlarmViewHolder(private val binding: ItemAlarmBinding) : RecyclerView.ViewHolder(binding.root) {
     fun bind(item: MyElement) {

@@ -1,4 +1,4 @@
-package kr.nine1ll.newtext.textdb
+package com.example.angry_alarm.textdb
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

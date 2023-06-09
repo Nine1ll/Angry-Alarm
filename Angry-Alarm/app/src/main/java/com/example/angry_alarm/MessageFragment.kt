@@ -1,4 +1,4 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -13,14 +13,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.angryalarm.databinding.FragmentMassageBinding
+import com.example.angry_alarm.databinding.FragmentMassageBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import kr.nine1ll.newtext.textdb.TextDaoDatabase
-import kr.nine1ll.newtext.textdb.TextTable
+import com.example.angry_alarm.textdb.TextDaoDatabase
+import com.example.angry_alarm.textdb.TextTable
 
 class MessageFragment : Fragment() {
     private var _binding: FragmentMassageBinding? = null

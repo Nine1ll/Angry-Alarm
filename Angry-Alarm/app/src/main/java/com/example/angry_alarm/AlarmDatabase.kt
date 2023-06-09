@@ -1,4 +1,4 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

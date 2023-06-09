@@ -1,11 +1,11 @@
-package com.example.angryalarm
+package com.example.angry_alarm
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.angryalarm.databinding.TextListBinding
-import kr.nine1ll.newtext.textdb.TextTable
+import com.example.angry_alarm.databinding.TextListBinding
+import com.example.angry_alarm.textdb.TextTable
 
 class TextAdapter (private var dataSet: MutableList<TextTable>): RecyclerView.Adapter<TextAdapter.TextViewHolder>(){
     class TextViewHolder(val binding: TextListBinding) : RecyclerView.ViewHolder(binding.root)

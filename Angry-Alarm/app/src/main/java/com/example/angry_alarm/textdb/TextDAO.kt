@@ -1,4 +1,4 @@
-package kr.nine1ll.newtext.textdb
+package com.example.angry_alarm.textdb
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.angry_alarm.textdb.TextTable
 
 @Dao
 interface TextDAO {

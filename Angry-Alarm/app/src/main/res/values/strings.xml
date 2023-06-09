@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Angry-Alarm</string>
+    <string name="SendText">메세지 보내기</string>
+    <string name="copy">복사하기</string>
+    <string name="telNumber">번호: </string>
+    <string name="message">문구: </string>
+    <string name="save">저장하기 </string>
+    <string name="onlyNumber">번호만 입력해주세요.</string>
 </resources>
