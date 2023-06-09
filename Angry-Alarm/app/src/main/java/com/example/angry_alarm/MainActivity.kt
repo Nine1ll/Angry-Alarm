@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -45,7 +46,9 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
                 }
             })
             .setDeniedMessage("원활한 어플 이용을 위해 반드시 알림 권한을 허용해주세요. 거부 시 어플 기능이 제한됩니다.")
-            .setPermissions(Manifest.permission.POST_NOTIFICATIONS)
+            .setPermissions(
+                Manifest.permission.POST_NOTIFICATIONS,
+                Manifest.permission.SEND_SMS)
             .check()
 
         // 프래그먼트 인스턴스 생성
@@ -70,7 +73,7 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
             showFragment(messageFragment)
         }
 
-        // FullScreenActivity에서 넘어왔는지 확인
+        // FullScreenActivity에서 넘어왔는지 확인 (다시울림을 누른 경우)
         if (intent != null && savedInstanceState == null) {
             realarm = intent.getBooleanExtra("realarm", false)
             interval = intent.getIntExtra("interval", 0)

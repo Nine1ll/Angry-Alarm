@@ -79,9 +79,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         title: String,
         hour: Int,
         minute: Int,
-//        alarmDays: String,
-//        repeatCount: Int,
-//        repeatInterval: Int
     ) {
         (activity as? AlarmSetListener)?.onAlarmSet(title, hour, minute)
     }

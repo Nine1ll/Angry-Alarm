@@ -161,15 +161,15 @@ class MessageFragment : Fragment() {
         val hour = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.hour))
         val minute = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.minute))
         val alarmDays = cursor.getString(cursor.getColumnIndexOrThrow(myEntry.alarm_days))
-        val repeatCount = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.repeat_count))
-        val repeatInterval = cursor.getLong(cursor.getColumnIndexOrThrow(myEntry.repeat_interval))
+        //val repeatCount = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.repeat_count))
+        //val repeatInterval = cursor.getLong(cursor.getColumnIndexOrThrow(myEntry.repeat_interval))
         val isVibrator = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.isVibrator)) == 1
         val isSwitchOn = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.isSwitchOn)) == 1
 
         cursor.close()
         alarmDB.close()
 
-        alarm = MyElement(id, title, hour, minute, alarmDays, repeatCount, repeatInterval, isVibrator, isSwitchOn)
+        alarm = MyElement(id, title, hour, minute, alarmDays, isVibrator, isSwitchOn)
 
         db = TextDaoDatabase.getDatabase(requireContext())!!
         CoroutineScope(Dispatchers.Main).launch {
