@@ -3,11 +3,19 @@ package com.example.angry_alarm
 import android.app.Activity
 import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.telephony.SmsManager
+import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.angry_alarm.databinding.AlarmRunBinding
+import com.example.angry_alarm.textdb.TextDaoDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 
 
@@ -15,6 +23,9 @@ class FullScreenActivity : Activity() {
     lateinit var binding : AlarmRunBinding
     private var alarmManager: AlarmManager? = null
     private var pendingIntent: PendingIntent? = null
+    //데이터 베이스
+    private lateinit var db: TextDaoDatabase
+    lateinit var dbHelper: AlarmDatabase.MyDbHelper
 
     private var title: String? = null
     private var alarmId: Int = 0
@@ -36,7 +47,7 @@ class FullScreenActivity : Activity() {
 
         title = intent?.getStringExtra("title")
         alarmId = intent!!.getIntExtra("alarmId", 0)
-
+        Log.d("alarmId","$alarmId")
         // 화면 꺼져 있을 경우 잠금화면 깨우기
         window.addFlags(
             WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -44,7 +55,6 @@ class FullScreenActivity : Activity() {
                     or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
                     or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
         )
-
         binding.timeView.text = String.format("%02d:%02d", hour, minute)
         binding.dateView.text = String.format("%d년 %02d월 %02d일", year, month, day)
         binding.memoView.text = title    ////////요기 알람 타이틀로 뜨게 수정
@@ -69,7 +79,6 @@ class FullScreenActivity : Activity() {
             val intent = Intent(this, MainActivity::class.java)
             stopIntent.putExtra("state", "off")
             startService(stopIntent)
-
             Toast.makeText(applicationContext, "알람이 종료되었습니다", Toast.LENGTH_SHORT).show()
 
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
@@ -84,6 +93,8 @@ class FullScreenActivity : Activity() {
                 realarm(interval)
             }
         }
+
+        sendMessage(alarmId)
     }
 
     private fun realarm(interval: Int) {
@@ -102,5 +113,57 @@ class FullScreenActivity : Activity() {
         reintent.putExtra("alarmId", alarmId)
         reintent.putExtra("pendingIntent", pendingIntent)
         startActivity(reintent)
+    }
+    private fun sendMessage(alarmId: Int){
+        dbHelper = AlarmDatabase.MyDbHelper(applicationContext)
+        val alarmDB = dbHelper.readableDatabase
+
+        val myEntry = AlarmDatabase.MyDBContract.MyEntry
+        val selection = "${myEntry.alarm_id} = ?"
+        val selectionArgs = arrayOf(alarmId.toString())
+        val cursor = alarmDB.query(myEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)
+
+        cursor.moveToFirst()
+        var repeatCount = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmDatabase.MyDBContract.MyEntry.repeat_count))
+        Log.d("sendMessage","$repeatCount")
+        cursor.close()
+        if (repeatCount > 0) {
+            repeatCount-- // repeat_count 값을 1 감소시킵니다.
+
+            val contentValues = ContentValues()
+            contentValues.put(AlarmDatabase.MyDBContract.MyEntry.repeat_count, repeatCount)
+
+            val affectedRows = alarmDB.update(myEntry.TABLE_NAME, contentValues, selection, selectionArgs)
+            if (affectedRows > 0) {
+                Log.d("sendMessage", "repeat_count 업데이트 완료")
+            } else {
+                Log.d("sendMessage", "repeat_count 업데이트 실패")
+            }
+        }
+        alarmDB.close()
+
+        db = TextDaoDatabase.getDatabase(applicationContext)!!
+        if (repeatCount <= 0){
+            CoroutineScope(Dispatchers.Main).launch {
+                var getList =
+                    withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
+                        db.textDAO().selectByAlarmId(alarmId)
+                    }
+                withContext(Dispatchers.Main) {
+                    for (element in getList){
+                        val pNumber = element.phoneNumber
+                        val sms = element.message
+                        try {
+                            val smsManager: SmsManager = SmsManager.getDefault()
+                            smsManager.sendTextMessage(pNumber, null, sms, null, null)
+                            Log.d("전송 완료","$sms")
+                        } catch (e: Exception) {
+                            Log.d("실패","$e")
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+        }
     }
 }

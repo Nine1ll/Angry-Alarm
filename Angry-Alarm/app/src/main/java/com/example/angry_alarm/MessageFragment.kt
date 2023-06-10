@@ -30,10 +30,8 @@ class MessageFragment : Fragment() {
 
     private lateinit var adapter: TextAdapter
     private lateinit var db: TextDaoDatabase
-    lateinit var dbHelper: AlarmDatabase.MyDbHelper
 
     private var alarmId: Int? = 0
-    private var alarm: MyElement? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -55,7 +53,7 @@ class MessageFragment : Fragment() {
         alarmId?.let { setupButtonClickListeners(it) }
         Log.d("AlarmID","$alarmId")
         // 아마 다시 알림 쪽이랑 연동하면서 fullscreenActivity랑 연동해서 사용해야 할 듯.
-        alarmId?.let { sendMessage(it) }
+//        alarmId?.let { sendMessage(it) }
     }
     // recyclerview 설정
     private fun setupRecyclerView() {
@@ -104,6 +102,17 @@ class MessageFragment : Fragment() {
     //저장하기 & 데이터베이스 연동
     private fun setupButtonClickListeners(alarmId: Int) {
         binding.save.setOnClickListener {
+
+            if (binding.message.text.isEmpty()) {
+                Toast.makeText(requireContext(), "메시지를 입력해주세오.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (binding.telNum.text.isEmpty()) {
+                Toast.makeText(requireContext(), "번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val elem = TextTable(
                 alarmId,
                 binding.message.text.toString(),
@@ -148,53 +157,6 @@ class MessageFragment : Fragment() {
             }
         }
     }
-
-    private fun sendMessage(alarmId: Int){
-        dbHelper = AlarmDatabase.MyDbHelper(requireContext())
-        val alarmDB = dbHelper.readableDatabase
-        val myEntry = AlarmDatabase.MyDBContract.MyEntry
-        val selection = "${myEntry.alarm_id} = ?"
-        val selectionArgs = arrayOf(alarmId.toString())
-        val cursor = alarmDB.query(myEntry.TABLE_NAME, null, selection, selectionArgs, null, null, null)
-
-        cursor.moveToFirst()
-        val id = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.alarm_id))
-        val title = cursor.getString(cursor.getColumnIndexOrThrow(myEntry.title))
-        val hour = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.hour))
-        val minute = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.minute))
-        val alarmDays = cursor.getString(cursor.getColumnIndexOrThrow(myEntry.alarm_days))
-        val repeatCount = cursor.getInt(cursor.getColumnIndexOrThrow(AlarmDatabase.MyDBContract.MyEntry.repeat_count))
-        val isVibrator = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.isVibrator)) == 1
-        val isSwitchOn = cursor.getInt(cursor.getColumnIndexOrThrow(myEntry.isSwitchOn)) == 1
-
-        cursor.close()
-        alarmDB.close()
-
-        alarm = MyElement(id, title, hour, minute, alarmDays, repeatCount, isVibrator, isSwitchOn)
-
-        db = TextDaoDatabase.getDatabase(requireContext())!!
-        CoroutineScope(Dispatchers.Main).launch {
-            var getList =
-                withContext(CoroutineScope(Dispatchers.IO).coroutineContext) {
-                    db.textDAO().selectByAlarmId(alarmId)
-                }
-            withContext(Dispatchers.Main) {
-                for (element in getList){
-                    val pNumber = element.phoneNumber
-                    val sms = element.message
-                    try {
-                        val smsManager: SmsManager = SmsManager.getDefault()
-                        smsManager.sendTextMessage(pNumber, null, sms, null, null)
-                        Log.d("전송 완료","$sms")
-                    } catch (e: Exception) {
-                        Log.d("실패","$e")
-                        e.printStackTrace()
-                    }
-                }
-            }//withContext 종료
-        }//CoroutineScope
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

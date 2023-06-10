@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
     var realarm = false
     var interval = 0
     var alarmId = 0
+    private var repeatCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
