@@ -21,12 +21,14 @@ class AlarmService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        val title = intent?.getStringExtra("title")
+
         // Foreground 에서 실행되면 Notification 을 보여줘야 됨
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // fullscreen notificaition
             val fullScreenIntent = Intent(this, FullScreenActivity::class.java)
-            val fullScreenPendingIntent =
-                PendingIntent.getActivity(
+            fullScreenIntent.putExtra("title", title)
+            val fullScreenPendingIntent = PendingIntent.getActivity (
                     this,
                     0,
                     fullScreenIntent,
@@ -38,8 +40,8 @@ class AlarmService : Service() {
             val builder = NotificationCompat.Builder(this, channelId)
             val notification: Notification = builder.setOngoing(true)
                 .setSmallIcon(R.mipmap.ic_launcher) //.setCategory(Notification.CATEGORY_SERVICE)
-                .setContentTitle("알람입니다")       // 알람 타이틀로 변경?
-                .setContentText("일어나세요")
+                .setContentTitle(title)       // 알람 타이틀로 변경?
+                .setContentText("Angry-Alarm을 통해 설정된 알람입니다.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 //.setDefaults(Notification.DEFAULT_VIBRATE)
                 //.setCategory(NotificationCompat.CATEGORY_)

@@ -31,6 +31,8 @@ class FullScreenActivity : Activity() {
         setContentView(binding.root) // fullscreen.xml 파일의 레이아웃을 설정
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
+        val title = intent?.getStringExtra("title")
+
         // 화면 꺼져 있을 경우 잠금화면 깨우기
         window.addFlags(
             WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
@@ -41,7 +43,7 @@ class FullScreenActivity : Activity() {
 
         binding.timeView.text = String.format("%02d:%02d", hour, minute)
         binding.dateView.text = String.format("%d년 %02d월 %02d일", year, month, day)
-        binding.memoView.text = "알람입니다"    ////////요기 알람 타이틀로 뜨게 수정
+        binding.memoView.text = title    ////////요기 알람 타이틀로 뜨게 수정
         binding.minusBtn.setOnClickListener {
             if (interval <= 1) {
                 Toast.makeText(applicationContext, "1분 이상 설정 가능합니다", Toast.LENGTH_SHORT).show()
@@ -69,8 +71,6 @@ class FullScreenActivity : Activity() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             startActivity(intent)
             //moveTaskToBack(true) // 태스크를 백그라운드로 이동
-            //finishAndRemoveTask() // 액티비티 종료 + 태스크 리스트에서 지우기
-            //android.os.Process.killProcess(android.os.Process.myPid())
         }
         // 다시알림 설정
         binding.realarmBtn.setOnClickListener {

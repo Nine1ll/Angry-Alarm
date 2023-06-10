@@ -150,6 +150,7 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         val intent = Intent(this, AlarmReceiver::class.java)
         // state 값이 on 이면 알람시작, off 이면 중지
         intent.putExtra("state", "on")
+        intent.putExtra("title", title)
         pendingIntent =
             PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
 
