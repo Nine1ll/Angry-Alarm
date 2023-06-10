@@ -16,6 +16,9 @@ class FullScreenActivity : Activity() {
     private var alarmManager: AlarmManager? = null
     private var pendingIntent: PendingIntent? = null
 
+    private var title: String? = null
+    private var alarmId: Int = 0
+
     val calendar = Calendar.getInstance()
     var interval = 5
 
@@ -31,7 +34,8 @@ class FullScreenActivity : Activity() {
         setContentView(binding.root) // fullscreen.xml 파일의 레이아웃을 설정
         alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
 
-        val title = intent?.getStringExtra("title")
+        title = intent?.getStringExtra("title")
+        alarmId = intent!!.getIntExtra("alarmId", 0)
 
         // 화면 꺼져 있을 경우 잠금화면 깨우기
         window.addFlags(
@@ -75,7 +79,10 @@ class FullScreenActivity : Activity() {
         // 다시알림 설정
         binding.realarmBtn.setOnClickListener {
             Toast.makeText(applicationContext, "${interval}분 후 다시알림이 설정되었습니다", Toast.LENGTH_SHORT).show()
-            realarm(interval)
+            if (title != null && alarmId != null) {
+                //realarm(interval, title, alarmId)
+                realarm(interval)
+            }
         }
     }
 
@@ -85,11 +92,14 @@ class FullScreenActivity : Activity() {
         pendingIntent =
             PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
         alarmManager!!.set(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+
         val reintent = Intent(this, MainActivity::class.java)
 
         // MainActivity로 전달
         reintent.putExtra("realarm", true)
         reintent.putExtra("interval", interval)
+        reintent.putExtra("title", title)
+        reintent.putExtra("alarmId", alarmId)
         reintent.putExtra("pendingIntent", pendingIntent)
         startActivity(reintent)
     }

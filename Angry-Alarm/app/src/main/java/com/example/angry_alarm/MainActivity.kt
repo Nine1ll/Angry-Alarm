@@ -24,10 +24,11 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
 
     private var alarmManager: AlarmManager? = null
     private var pendingIntent: PendingIntent? = null
-
+    private var title: String? = null
     val calendar = Calendar.getInstance()
     var realarm = false
     var interval = 0
+    var alarmId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,17 +78,20 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         if (intent != null && savedInstanceState == null) {
             realarm = intent.getBooleanExtra("realarm", false)
             interval = intent.getIntExtra("interval", 0)
+            //title = intent.getStringExtra("title")
+            title = intent.getStringExtra("title") ?: "알람입니다."
+            alarmId = intent.getIntExtra("alarmId", 0)
             if (interval != 0) {
                 pendingIntent = intent.getParcelableExtra<PendingIntent>("pendingIntent")
                 stop()          // 사용자가 다시 울림 버튼을 눌렀으므로 현재 알림은 stop
-                start("다시울림", calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))
+                start(alarmId, title!!, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE))
             }
         }
     }
 
     // AlarmSetFragment에서 저장 버튼 클릭 시, 알람매니저 호출
-    override fun onAlarmSet(title: String, hour: Int, minute: Int) {
-        start(title, hour, minute)
+    override fun onAlarmSet(alarmId: Int, title: String, hour: Int, minute: Int) {
+        start(alarmId, title, hour, minute)
     }
 
     private fun showFragment(fragment: Fragment) {
@@ -121,11 +125,12 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
     }
     /* 알람 시작 */
     private fun start(
+        alarmId: Int,
         title: String,
         hour: Int,
         minute: Int,
     ) {
-        val requestCode = System.currentTimeMillis().toInt()
+        //val requestCode = System.currentTimeMillis().toInt()
 
         // 첫알림과 다시알림 구분하여 시간 설정
         if (!realarm) {
@@ -151,15 +156,12 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         // state 값이 on 이면 알람시작, off 이면 중지
         intent.putExtra("state", "on")
         intent.putExtra("title", title)
+        intent.putExtra("alarmId", alarmId)
         pendingIntent =
-            PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
+            PendingIntent.getBroadcast(this, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE)
 
         // 알람 설정
         alarmManager!![AlarmManager.RTC_WAKEUP, calendar.timeInMillis] = pendingIntent
-
-        //val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        //Toast.makeText(this, "Alarm : " + format.format(calendar.time), Toast.LENGTH_SHORT).show()
-        Toast.makeText(this, "Alarm : ${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}:${calendar.get(Calendar.SECOND)} / realarm: $realarm", Toast.LENGTH_SHORT).show()
     }
 
     /* 알람 중지 */

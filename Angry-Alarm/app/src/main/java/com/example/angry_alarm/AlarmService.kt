@@ -21,13 +21,15 @@ class AlarmService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val title = intent?.getStringExtra("title")
+        val title = intent.getStringExtra("title")
+        val alarmId = intent.getIntExtra("alarmId", 0)
 
         // Foreground 에서 실행되면 Notification 을 보여줘야 됨
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // fullscreen notificaition
             val fullScreenIntent = Intent(this, FullScreenActivity::class.java)
             fullScreenIntent.putExtra("title", title)
+            fullScreenIntent.putExtra("alarmId", alarmId)
             val fullScreenPendingIntent = PendingIntent.getActivity (
                     this,
                     0,
