@@ -151,6 +151,17 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         val alarmDays = getSelectedDays()
         val repeatCount = binding.repeatCount.text.toString()
 
+
+        if (repeatCount.isEmpty()) {
+            Toast.makeText(requireContext(), "반복 횟수를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (alarmDays.isEmpty()) {
+            Toast.makeText(requireContext(), "요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         // 데이터베이스에 알람 정보 저장
         val db = dbHelper.writableDatabase
         val myentry = AlarmDatabase.MyDBContract.MyEntry
@@ -161,7 +172,7 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
             put(myentry.alarm_days, alarmDays)
             put(myentry.repeat_count, repeatCount.toInt())
             put(myentry.isVibrator, 0) // 진동 설정 여부 저장
-            put(myentry.isSwitchOn, 0) // 스위치 상태 저장
+            put(myentry.isSwitchOn, 1) // 스위치 상태 저장
         }
         val newRowId = db.insert(myentry.TABLE_NAME, null, values)
         db.close()
@@ -187,6 +198,17 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         val minute = binding.timePicker.minute
         val alarmDays = getSelectedDays()
         val repeatcount = binding.repeatCount.text.toString()
+
+
+        if (repeatcount.isEmpty()) {
+            Toast.makeText(requireContext(), "반복 횟수를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (alarmDays.isEmpty()) {
+            Toast.makeText(requireContext(), "요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
+            return
+        }
 
         // 데이터베이스에서 알람 정보 업데이트
         val db = dbHelper.writableDatabase
