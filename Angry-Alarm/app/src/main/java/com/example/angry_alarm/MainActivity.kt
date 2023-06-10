@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
             realarm = intent.getBooleanExtra("realarm", false)
             interval = intent.getIntExtra("interval", 0)
             //title = intent.getStringExtra("title")
-            title = intent.getStringExtra("title") ?: "알람입니다."
+            title = intent.getStringExtra("title")
             alarmId = intent.getIntExtra("alarmId", 0)
             if (interval != 0) {
                 pendingIntent = intent.getParcelableExtra<PendingIntent>("pendingIntent")
@@ -131,8 +131,6 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         hour: Int,
         minute: Int,
     ) {
-        //val requestCode = System.currentTimeMillis().toInt()
-
         // 첫알림과 다시알림 구분하여 시간 설정
         if (!realarm) {
             // alarm DB 에서 저장된 시간 가져오기

@@ -41,21 +41,16 @@ class AlarmService : Service() {
             val channelId = createNotificationChannel()
             val builder = NotificationCompat.Builder(this, channelId)
             val notification: Notification = builder.setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher) //.setCategory(Notification.CATEGORY_SERVICE)
-                .setContentTitle(title)       // 알람 타이틀로 변경?
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(title)
                 .setContentText("Angry-Alarm을 통해 설정된 알람입니다.")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                //.setDefaults(Notification.DEFAULT_VIBRATE)
-                //.setCategory(NotificationCompat.CATEGORY_)
-                //.setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_VIBRATE)
-                //.setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(fullScreenPendingIntent)
                 .setFullScreenIntent(fullScreenPendingIntent, true)
                 .build()
 
             // fullscreen 추가
             notification.fullScreenIntent = fullScreenPendingIntent
-            //요기까지
 
             startForeground(1, notification)
         }
@@ -79,7 +74,6 @@ class AlarmService : Service() {
             }
         }
         return START_NOT_STICKY
-        //return START_STICKY
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
