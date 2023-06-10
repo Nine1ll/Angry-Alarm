@@ -79,9 +79,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         title: String,
         hour: Int,
         minute: Int,
-//        alarmDays: String,
-//        repeatCount: Int,
-//        repeatInterval: Int
     ) {
         (activity as? AlarmSetListener)?.onAlarmSet(title, hour, minute)
     }
@@ -157,10 +154,12 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
             return
         }
 
-        if (alarmDays.isEmpty()) {
-            Toast.makeText(requireContext(), "요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
+//        if (alarmDays.isEmpty()) {
+//            Toast.makeText(requireContext(), "요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+
+        onAlarmSet(title, hour, minute)
 
         // 데이터베이스에 알람 정보 저장
         val db = dbHelper.writableDatabase
@@ -176,8 +175,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         }
         val newRowId = db.insert(myentry.TABLE_NAME, null, values)
         db.close()
-
-        onAlarmSet(title, hour, minute)
 
         // 저장버튼 누를 시 알람 뷰 fragment로 이동
         parentFragmentManager.beginTransaction()

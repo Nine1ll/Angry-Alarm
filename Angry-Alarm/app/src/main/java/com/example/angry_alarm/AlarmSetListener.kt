@@ -6,8 +6,5 @@ interface AlarmSetListener {
         title: String,
         hour: Int,
         minute: Int,
-//        alarmDays: String,
-//        repeatCount: Int,
-//        repeatInterval: Int
     )
 }

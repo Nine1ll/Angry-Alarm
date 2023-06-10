@@ -124,9 +124,6 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         title: String,
         hour: Int,
         minute: Int,
-//        alarmDays: String,
-//        repeatCount: Int,
-//        repeatInterval: Int
     ) {
         val requestCode = System.currentTimeMillis().toInt()
 
@@ -137,6 +134,7 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
             calendar[Calendar.MINUTE] = minute
             calendar[Calendar.SECOND] = 0
         } else {                // 다시 알람일 경우 현재 minute에 interval 더한 시간으로 수정
+            realarm = false
             calendar[Calendar.HOUR_OF_DAY] = calendar.get(Calendar.HOUR_OF_DAY)
             calendar[Calendar.MINUTE] = calendar.get(Calendar.MINUTE) + interval
             calendar[Calendar.SECOND] = 0
@@ -158,8 +156,9 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         // 알람 설정
         alarmManager!![AlarmManager.RTC_WAKEUP, calendar.timeInMillis] = pendingIntent
 
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        Toast.makeText(this, "Alarm : " + format.format(calendar.time), Toast.LENGTH_SHORT).show()
+        //val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        //Toast.makeText(this, "Alarm : " + format.format(calendar.time), Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Alarm : ${calendar.get(Calendar.HOUR_OF_DAY)}:${calendar.get(Calendar.MINUTE)}:${calendar.get(Calendar.SECOND)} / realarm: $realarm", Toast.LENGTH_SHORT).show()
     }
 
     /* 알람 중지 */
