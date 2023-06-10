@@ -16,6 +16,7 @@ class AlarmDatabase {
             const val hour = "hour"
             const val minute = "minute"
             const val alarm_days = "alarm_days"
+            const val repeat_count = "repeat_count"
             const val isVibrator = "isVibrator"
             const val isSwitchOn = "isSwitchOn"
         }
@@ -30,6 +31,7 @@ class AlarmDatabase {
                     "${MyDBContract.MyEntry.hour} INTEGER," +
                     "${MyDBContract.MyEntry.minute} INTEGER," +
                     "${MyDBContract.MyEntry.alarm_days} TEXT," +
+                    "${MyDBContract.MyEntry.repeat_count} INTEGER," +
                     "${MyDBContract.MyEntry.isVibrator} INTEGER DEFAULT 0," +
                     "${MyDBContract.MyEntry.isSwitchOn} INTEGER DEFAULT 0)"
         val SQL_DELETE_ENTRIES = "DROP TABLE IF EXISTS ${MyDBContract.MyEntry.TABLE_NAME}"
@@ -68,6 +70,7 @@ class AlarmDatabase {
                     val hour = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.hour))
                     val minute = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.minute))
                     val alarmDays = getString(getColumnIndexOrThrow(MyDBContract.MyEntry.alarm_days))
+                    val repeatCount = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.repeat_count))
                     val isVibrator = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.isVibrator)) == 1
                     val isSwitchOn = getInt(getColumnIndexOrThrow(MyDBContract.MyEntry.isSwitchOn)) == 1
 
@@ -78,6 +81,7 @@ class AlarmDatabase {
                             hour,
                             minute,
                             alarmDays,
+                            repeatCount,
                             isVibrator,
                             isSwitchOn
                         )

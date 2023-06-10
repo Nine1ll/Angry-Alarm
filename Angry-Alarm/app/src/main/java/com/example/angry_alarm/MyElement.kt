@@ -9,11 +9,12 @@ data class MyElement(
     val hour: Int,
     val minute: Int,
     val alarm_days: String,
+    val repeatCount: Int,
     val isVibrator: Boolean,
     val isSwitchOn: Boolean
 ) {
     override fun toString(): String {
-        return "MyElement(alarm_id=$alarm_id, title='$title', hour=$hour, minute=$minute, alarm_days='$alarm_days', isVibrator=$isVibrator, isSwitchOn=$isSwitchOn)"
+        return "MyElement(alarm_id=$alarm_id, title='$title', hour=$hour, minute=$minute, alarm_days='$alarm_days', repeatCount=$repeatCount, isVibrator=$isVibrator, isSwitchOn=$isSwitchOn)"
     }
 
     fun getFormattedTime(): String {
