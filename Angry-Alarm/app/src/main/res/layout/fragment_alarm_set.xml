@@ -58,6 +58,7 @@
             android:layout_height="wrap_content"
             android:hint="메시지 전송의 기준이 될 다시알림 횟수"
             android:layout_marginTop="8dp"
+            android:inputType="number"
             app:layout_constraintTop_toBottomOf="@id/alarm_title"/>
 
         <LinearLayout
