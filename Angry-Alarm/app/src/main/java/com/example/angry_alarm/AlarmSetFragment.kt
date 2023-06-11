@@ -198,11 +198,6 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
             return
         }
 
-        if (alarmDays.isEmpty()) {
-            Toast.makeText(requireContext(), "요일을 선택해주세요.", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         // 데이터베이스에서 알람 정보 업데이트
         val db = dbHelper.writableDatabase
         val myentry = AlarmDatabase.MyDBContract.MyEntry
@@ -223,6 +218,9 @@ class AlarmSetFragment : Fragment(), AlarmSetListener {
         parentFragmentManager.beginTransaction()
             .replace(R.id.fragmentPlace,AlarmViewFragment())
             .commit()
+
+        val mainActivity = requireActivity() as MainActivity
+        onAlarmSet(alarmToUpdate.alarm_id, title, hour, minute)
 
         // 알림 변경 완료 메시지 출력
         Toast.makeText(requireContext(), "알람이 변경되었습니다.", Toast.LENGTH_SHORT).show()

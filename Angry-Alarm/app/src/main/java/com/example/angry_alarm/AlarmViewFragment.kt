@@ -88,6 +88,10 @@ class AlarmViewFragment : Fragment() {
                         .setMessage("선택한 알람을 삭제하시겠습니까?")
                         .setPositiveButton("확인") { _, _ ->
                             val alarmId: Int? = adapter.getItemSelectionKey(position)
+                            val mainActivity = requireActivity() as MainActivity
+                            if (alarmId != null) {
+                                mainActivity.cancel(alarmId)
+                            }
                             dbHelper.delEntry(alarmId!!)
                             val getList = dbHelper.selectAll()
                             adapter.setList(getList)
