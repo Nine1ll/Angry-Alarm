@@ -62,13 +62,6 @@
             android:layout_gravity="center"
             android:text="@string/save"
             android:layout_marginRight="16dp"/>
-        <Button
-            android:id="@+id/buttonSend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="보내기"
-            android:layout_marginRight="16dp"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
