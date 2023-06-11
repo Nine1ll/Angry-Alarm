@@ -8,5 +8,6 @@
 알람이 울려도 일어나지 못하는 사람들을 위해 사용자가 지정한 일정 횟수 이상 알람이 다시 울릴 경우, 미리 지정한 대상에게 메세지가 자동으로 발송되어 기상에 도움을 되고자 개발하게 되었다.
 
 ### - 개발 환경
-* Tool : Android Studio
-* Language : Kotiln  
+* Tool : Android Studio (버전
+* Language : Kotiln
+* sdk나 안드로이드 최소 버전 작성하기
