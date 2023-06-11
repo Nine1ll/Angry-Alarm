@@ -11,6 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.angry_alarm.databinding.FragmentAlarmBinding
+import com.example.angry_alarm.textdb.TextDAO
+import com.example.angry_alarm.textdb.TextDaoDatabase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AlarmViewFragment : Fragment() {
     private lateinit var binding: FragmentAlarmBinding
@@ -18,6 +23,7 @@ class AlarmViewFragment : Fragment() {
     private lateinit var adapter: AlarmAdaptor
     private lateinit var mainActivity: MainActivity
     private lateinit var comm: Communicator
+    private lateinit var db : TextDaoDatabase
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is MainActivity) {
@@ -63,7 +69,7 @@ class AlarmViewFragment : Fragment() {
 
         adapter.setOnItemClickListener { position: Int ->
             val alarmId = adapter.getItemSelectionKey(position)
-            alarmId?.let { mainActivity.onAlarmSelected(it) }
+            alarmId?.let { mainActivity.onAlarmSelected(it)}
             comm = requireActivity() as Communicator
             if (alarmId != null) {
                 comm.passDataCom(alarmId)
@@ -73,23 +79,30 @@ class AlarmViewFragment : Fragment() {
 
         adapter.setOnLongClickListener { position: Int ->
             val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("삭제")
-                .setMessage("선택한 알람을 삭제 하시겠습니까?")
-                .setPositiveButton("확인"
-                ) { dialog, id ->
+            builder.setTitle("알람 설정")
+
+                .setPositiveButton("삭제") { dialog, id ->
                     dialog.dismiss()
+                    val confirmDialog = AlertDialog.Builder(requireContext())
+                    confirmDialog.setTitle("알람 삭제")
+                        .setMessage("선택한 알람을 삭제하시겠습니까?")
+                        .setPositiveButton("확인") { _, _ ->
+                            val alarmId: Int? = adapter.getItemSelectionKey(position)
+                            dbHelper.delEntry(alarmId!!)
+                            val getList = dbHelper.selectAll()
+                            adapter.setList(getList)
+                        }
+                        .setNegativeButton("취소") { _, _ ->
+                            // 취소 버튼 클릭 시 처리 로직
+                        }
+                        .show()
+                }
+                .setNegativeButton("수정") { dialog, id ->
+                    // 수정 버튼 클릭 시 처리 로직
                     val alarmId: Int? = adapter.getItemSelectionKey(position)
-                    dbHelper.delEntry(alarmId!!);
-
-                    val getList = dbHelper.selectAll()
-                    adapter.setList(getList)
-
+                    alarmId?.let { mainActivity.onAlarmSelected(it)}
                 }
-                .setNegativeButton("취소"
-                ) { dialog, id ->
-                    dialog.dismiss()
-                }
-            builder.show()
+                .show()
         }
     }
 }

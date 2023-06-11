@@ -15,6 +15,7 @@ class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
 
     private var onCheckedChangeListener: ((Int, Boolean) -> Unit)? = null
 
+
     fun setOnItemClickListener(listener: (Int) -> Unit) {
         onItemClickListener = listener
     }
@@ -61,7 +62,6 @@ class AlarmAdaptor(private var dataSet: MutableList<MyElement>) :
     inner class MyViewHolder(val binding: ItemAlarmBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MyElement) {
             binding.alarmTime.text = item.getFormattedTime()
-            binding.APM.text = item.getAMPM(item.hour)
             binding.alarmDays.text = item.alarm_days
             binding.alarmTitle.text = item.title
             binding.alarmOnoff.isChecked = item.isSwitchOn

@@ -22,8 +22,4 @@ data class MyElement(
         val minuteFormatted = minute.toString().padStart(2, '0')
         return "$hourFormatted:$minuteFormatted"
     }
-
-    fun getAMPM(hour: Int): String {
-        return if (hour >= 12) "PM" else "AM"
-    }
 }
