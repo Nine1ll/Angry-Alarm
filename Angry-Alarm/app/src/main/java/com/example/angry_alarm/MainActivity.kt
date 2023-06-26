@@ -134,14 +134,14 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         // 첫알림과 다시알림 구분하여 시간 설정
         if (!realarm) {
             // alarm DB 에서 저장된 시간 가져오기
-            calendar[Calendar.HOUR_OF_DAY] = hour
-            calendar[Calendar.MINUTE] = minute
-            calendar[Calendar.SECOND] = 0
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, minute)
+            calendar.set(Calendar.SECOND, 0)
         } else {                // 다시 알람일 경우 현재 minute에 interval 더한 시간으로 수정
             realarm = false
-            calendar[Calendar.HOUR_OF_DAY] = calendar.get(Calendar.HOUR_OF_DAY)
-            calendar[Calendar.MINUTE] = calendar.get(Calendar.MINUTE) + interval
-            calendar[Calendar.SECOND] = 0
+            calendar.set(Calendar.HOUR_OF_DAY, hour)
+            calendar.set(Calendar.MINUTE, minute + interval)
+            calendar.set(Calendar.SECOND, 0)
         }
 
         // 현재시간보다 이전이면
@@ -177,6 +177,15 @@ class MainActivity : AppCompatActivity(), Communicator, AlarmSetListener {
         intent.putExtra("state", "off")
         sendBroadcast(intent)
         pendingIntent = null
+    }
+
+    /* 알람 취소 */
+    fun cancel(alarmId: Int) {
+        val intent = Intent(this, AlarmReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, alarmId, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+        alarmManager?.cancel(pendingIntent)
+        pendingIntent.cancel()
     }
 }
 interface Communicator {
